@@ -2,6 +2,8 @@
 
 This tscircuit project defines a schematic and preliminary placement on a 110 × 85 mm board. It uses an STM32F746ZGT6 in LQFP144 and an external regulated 3.3 V supply. The connector pin orders are defined in [board.tsx](board.tsx), starting at pin 1. TX and RX names are from the board's perspective.
 
+Install Node.js 24 and Bun before running the tscircuit CLI.
+
 ```powershell
 npm install
 npm run dev

@@ -21,7 +21,8 @@ const signals: Record<string, string> = {
 }
 
 const endpoint = (name: string, pin: number, net: string) =>
-  <trace key={`${name}-${pin}`} from={`.${name} > .pin${pin}`} to={`net.${net}`} />
+  <trace key={`${name}-${pin}`} from={`.${name} > .pin${pin}`} to={`net.${net}`}
+    schDisplayLabel={net} />
 
 type PartProps = {
   name: string
@@ -37,7 +38,7 @@ function Part({ name, part, footprint, pins, nets, x, y }: PartProps) {
   return <>
     <chip name={name} manufacturerPartNumber={part} footprint={footprint}
       pinLabels={Object.fromEntries(pins.map((label, index) => [index + 1, label]))}
-      pcbX={x} pcbY={y} schX={x / 7} schY={y / 7} />
+      pcbX={x} pcbY={y} schX={x / 2} schY={y / 2} />
     {nets.map((net, index) => net && endpoint(name, index + 1, net))}
   </>
 }
@@ -53,7 +54,8 @@ function Capacitor({ name, value, net, other = GND, x, y }: {
   name: string; value: string; net: string; other?: string; x: number; y: number
 }) {
   return <>
-    <capacitor name={name} capacitance={value} footprint="0603" pcbX={x} pcbY={y} />
+    <capacitor name={name} capacitance={value} footprint="0603"
+      pcbX={x} pcbY={y} schX={x / 2} schY={y / 2} />
     {endpoint(name, 1, net)}{endpoint(name, 2, other)}
   </>
 }
@@ -62,14 +64,15 @@ function Resistor({ name, value, a, b, x, y }: {
   name: string; value: string; a: string; b: string; x: number; y: number
 }) {
   return <>
-    <resistor name={name} resistance={value} footprint="0603" pcbX={x} pcbY={y} />
+    <resistor name={name} resistance={value} footprint="0603"
+      pcbX={x} pcbY={y} schX={x / 2} schY={y / 2} />
     {endpoint(name, 1, a)}{endpoint(name, 2, b)}
   </>
 }
 
 function Mcu() {
   return <>
-    <chip name="U1" manufacturerPartNumber="STM32F746ZGT6"
+    <chip name="U1" manufacturerPartNumber="STM32F746ZGT6" schX={0} schY={0}
       pinLabels={Object.fromEntries(mcuPins.map((pin, index) => [index + 1, `${pin}_${index + 1}`]))}
       footprint={<footprint>
         {mcuPins.map((_, index) => {
@@ -88,7 +91,7 @@ function Mcu() {
 }
 
 export default function IndustrialCommBoard() {
-  return <board width="110mm" height="85mm" routingDisabled>
+  return <board width="110mm" height="85mm" routingDisabled schAutoLayoutEnabled={false}>
     <Mcu />
     <Header name="J1_POWER" nets={[VDD, GND]} x={-45} y={34} />
     <Header name="J2_SWD" nets={[VDD, "SWDIO", GND, "SWCLK", "NRST", "SWO"]} x={-27} y={34} />
@@ -96,7 +99,7 @@ export default function IndustrialCommBoard() {
     <Header name="J4_TFT" nets={[VDD, GND, "TFT_SCK", "TFT_MOSI", "TFT_MISO", "TFT_CS", "TFT_DC", "TFT_RESET"]} x={25} y={34} />
 
     <chip name="Y1" manufacturerPartNumber="ASE-8.000MHZ-LC-T" pcbX={-18} pcbY={2}
-      schX={-4} schY={2} pinLabels={{ 1: "OE", 2: "GND", 3: "OUT", 4: "VDD" }}
+      schX={-9} schY={1} pinLabels={{ 1: "OE", 2: "GND", 3: "OUT", 4: "VDD" }}
       footprint={<footprint>
         {([[-1.05, -0.825], [1.05, -0.825], [1.05, 0.825], [-1.05, 0.825]]).map(([x, y], i) =>
           <smtpad key={i} portHints={[`pin${i + 1}`]} shape="rect"
