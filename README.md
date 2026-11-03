@@ -12,6 +12,8 @@ npm run build
 
 Open the local URL printed by the preview command. The build command generates Circuit JSON.
 
+The [editable KiCad schematic](output/industrial-comm-board.kicad_sch) embeds its symbols. The [A2 schematic PDF](output/pdf/industrial-comm-board.pdf) uses the same pin and net data from tscircuit.
+
 | Interface | STM32 signals | Hardware |
 | --- | --- | --- |
 | UART | UART4 AF8, PC10 TX / PC11 RX | J3, 3.3 V logic |
