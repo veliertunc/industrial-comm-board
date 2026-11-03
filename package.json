@@ -1,0 +1,12 @@
+{
+  "name": "industrial-comm-board",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsci dev board.tsx",
+    "build": "tsci build board.tsx"
+  },
+  "dependencies": {
+    "tscircuit": "latest"
+  }
+}
